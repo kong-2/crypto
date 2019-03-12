@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+
+<!-- 뉴스 부분 -->
+{% block home %}
+<br>
+<div class = "container">
+    <div class="jumbotron">
+        <h3 class="display-6"> Crypto-News </h3>
+        <p class="lead"> 현재 시각 {% now "Y F jS H:i" %} : XX개의 뉴스가 업데이트 되었습니다. </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for data in api.Data %}
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{data.imageurl}}" class="card-img-top" alt="{{ data.source }}">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ data.title }} </h5>
+                        <p class="card-text"> {{ data.body|truncatechars:100 }} </p> <!-- 템플릿변수 문자열 자르기-->
+                        <a href="{{data.url}}" class="btn btn-secondary">More</a>
+                    </div>
+                </div><br>        
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+<!-- 가격부분 -->
+{% block price %}
+<br>
+<div class = "container">
+    <div class="jumbotron">
+        <h3 class="display-6"> 실시간 가격정보 </h3>
+        <p class="lead"> 현재 시각 {% now "Y F jS H:i" %} 가격정보 입니다. </p>
+    </div>
+
+    <table class="table table-striped table-bordered table-hover table-sm">
+    <thead>
+        <tr>
+        <th scope="col">Name </th>
+        <th scope="col">가격</th>
+        <th scope="col">일일 최고가</th>
+        <th scope="col">일일 최저가</th>
+        <th scope="col">시가총액(Market Cap)</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for key,value in price.DISPLAY.items %}
+                <tr>
+                <td>{{ key }}</td>
+                <td>{{ value.USD.PRICE }}</td>
+                <td>{{ value.USD.HIGHDAY }}</td>
+                <td>{{ value.USD.LOWDAY }}</td>
+                <td>{{ value.USD.MKTCAP }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
